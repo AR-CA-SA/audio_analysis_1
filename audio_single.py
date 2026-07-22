@@ -4,7 +4,9 @@ import librosa
 from scipy.signal import find_peaks
 from color import bcolors
 import pandas as pd
-PATH = "impact_audio/Object #3 audio trialcut.mp3"
+
+
+PATH_1 = "single audio cut/spoon#5 audio trialcut3.mp3"
 
 impact_noise = {"Object": [],
                 "Material":[],
@@ -31,7 +33,6 @@ def load_file(path):
 
     
     maxTime = timeSeries.size/sampleRate
-    print(maxTime)
     timeSteps  = np.linspace(0, maxTime, timeSeries.size)
     return timeSteps, timeSeries, sampleRate
 
@@ -73,7 +74,9 @@ the amplitude valuesrange from [-1, 1 ] floating type
 """
 def main():
 
-    time, amplitude, sr = load_file(path = PATH)
+    
+
+    time, amplitude, sr = load_file(path = PATH_1)
     audio_duration = len(amplitude)/sr
     print(time.size)
 
@@ -92,11 +95,10 @@ def main():
     peak_1 = np.max(amplitude_db_1)
 
 
-    text = """"
-    full audio | max intensity [2,3] : {peak_1} , frequency at which the max amplitude in db has been recorded : {freq_1}\n
-    
-    
-    """.format(peak_1=peak_1,freq_1=frequency_1[idx])
+    text = """
+    pat: {PATH}
+    full audio | max intensity : {peak_1} , frequency at which the max amplitude in db has been recorded : {freq_1}
+    """.format(peak_1=peak_1,freq_1=frequency_1[idx],PATH=PATH_1)
     print(text)
 
 
@@ -114,15 +116,15 @@ def main():
     axs[0].set_xlabel("Time (s)")
     axs[0].set_ylabel("Amplitude")
 
-    axs[1].plot(time, amplitude,color="#ff000d")
-    axs[1].set_xlabel("Time (s)")
+    axs[1].plot(frequency_1, amplitude_db_1,color="#ff000d")
+    axs[1].set_xlabel("Frequency Hz")
     axs[1].set_ylabel("Amplitude")
-    axs[1].set_title("Waveform [2,3]")
+    axs[1].set_title("Frequency Spectrum")
+    axs[1].set_xscale("log")
 
     axs[0].grid(True)
     axs[1].grid(True)
 
-    
 
     plt.show()
 if __name__ == "__main__":
